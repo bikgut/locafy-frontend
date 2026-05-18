@@ -4,16 +4,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
-import com.example.locafyapp.view.MapScreen
 import androidx.navigation.compose.composable
-import com.example.locafyapp.view.MenuInicio
-
+import androidx.navigation.compose.rememberNavController
+import com.example.locafyapp.view.*
+import com.example.locafyapp.viewModel.LocalesViewModel
 
 @Composable
 fun menu(){
     val bottomNavController = rememberNavController()
+    val localesViewModel: LocalesViewModel = viewModel()
 
     Scaffold(
         bottomBar = {
@@ -27,19 +28,19 @@ fun menu(){
             modifier = Modifier.padding(innerPadding)
         ){
             composable("map"){
-                MapScreen().map()
+                MapScreen().map(viewModel = localesViewModel)
             }
 
             composable("locales"){
-                //LocalesScreen()
+                LocalesScreen(viewModel = localesViewModel)
             }
 
             composable("favoritos"){
-                //FavoritoScreen()
+                FavoritosScreen(viewModel = localesViewModel)
             }
 
             composable("perfil"){
-                //PerfilScreen()
+                PerfilScreen(navController = bottomNavController)
             }
         }
     }
