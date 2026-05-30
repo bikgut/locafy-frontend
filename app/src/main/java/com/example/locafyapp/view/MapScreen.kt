@@ -1,16 +1,11 @@
 package com.example.locafyapp.view
 
-
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,27 +13,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-
+import com.example.locafyapp.models.UIState
+import com.example.locafyapp.viewModel.LocalesViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.*
 
-
-//PARTE VISUAL DE MAPA DE GOOGLE
-
 class MapScreen(private val navcontroller : NavHostController? = null) {
 
     @Composable
-    fun map() {
-
+    fun map(viewModel: LocalesViewModel) {
+        val state by viewModel.uiState.collectAsState()
         val santiago = LatLng(-33.45, -70.66)
 
         val cameraPositionState = rememberCameraPositionState {
             position = CameraPosition.fromLatLngZoom(santiago, 12f)
         }
 
-        //ESTO QUITA TODOS LOS PUNTOS DE INTERES COMO HOSPITAL, COLEGIO, CENTRO COMERCIAL, ETC
         val mapProperties = MapProperties(
             mapStyleOptions = MapStyleOptions(
                 """
@@ -58,7 +50,6 @@ class MapScreen(private val navcontroller : NavHostController? = null) {
         )
 
         Box(modifier = Modifier.fillMaxSize()) {
-        //ESTO LE DA EL TAMAÑO AL MAPA
             GoogleMap(
                 modifier = Modifier.fillMaxSize(),
                 cameraPositionState = cameraPositionState,
@@ -66,10 +57,16 @@ class MapScreen(private val navcontroller : NavHostController? = null) {
                 uiSettings =  mapUiSettings,
                 contentPadding = PaddingValues(bottom = 80.dp, top = 80.dp)
             ) {
-                Marker(
-                    state = MarkerState(position = santiago),
-                    title = "Santiago"
-                )
+                // MOSTRAR TODOS LOS LOCALES REGISTRADOS EN LA APP
+                if (state is UIState.Success) {
+                    (state as UIState.Success).locales.forEach { local ->
+                        Marker(
+                            state = MarkerState(position = LatLng(local.latitud, local.longitud)),
+                            title = local.nombre,
+                            snippet = local.tipoComida
+                        )
+                    }
+                }
             }
 
             //TITULO NOMBRE APP
