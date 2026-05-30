@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.locafyapp.view.LoginScreen
 import com.example.locafyapp.view.MapScreen
 import com.example.locafyapp.viewModel.AdminViewModel
 import com.example.locafyapp.viewModel.ClienteViewModel
@@ -19,6 +20,9 @@ fun navegar(adminViewModel: AdminViewModel, clienteViewModel: ClienteViewModel, 
         startDestination = "inicio"
     )
     {
+        composable("login")
+            LoginScreen(navController).login()
+
         composable("inicio"){
             MapScreen(navController)
         }
