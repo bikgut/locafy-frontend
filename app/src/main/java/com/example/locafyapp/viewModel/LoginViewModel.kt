@@ -16,8 +16,8 @@ class LoginViewModel: ViewModel() {
     var loginViewModel by mutableStateOf(LoginModel("", ""))
         private set
 
-    fun cambioUsername(nuevoUsername:String){
-        loginViewModel = loginViewModel.copy(username = nuevoUsername)
+    fun cambioEmail(nuevoEmail:String){
+        loginViewModel = loginViewModel.copy(email = nuevoEmail)
     }
 
     fun cambioPassword(nuevoPassword:String){
@@ -55,7 +55,7 @@ class LoginViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 val request = LoginModel(
-                    username = loginViewModel.username,
+                    email = loginViewModel.email,
                     password = loginViewModel.password
                 )
 

@@ -2,6 +2,6 @@ package com.example.locafyapp.models
 
 data class LoginModel (
 
-    var username:String,
+    var email:String,
     var password:String
 )

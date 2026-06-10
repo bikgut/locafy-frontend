@@ -22,6 +22,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -36,24 +37,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.locafyapp.R
 import com.example.locafyapp.alertas.mostrarAlerta
 import com.example.locafyapp.viewModel.LoginViewModel
 
-class LoginScreen(private val navController: NavController? = null) {
+class LoginScreen(private val navController: NavController) {
 
     @Composable
     fun login(){
 
         val viewModel = viewModel<LoginViewModel>()
-        val username = viewModel.loginViewModel.username
+        val username = viewModel.loginViewModel.email
         val password = viewModel.loginViewModel.password
 
         val navegan = viewModel.navegan
 
-        if(navegan == true){
-            navController?.navigate("inicio")
-            viewModel.cambiarNavegan()
+        LaunchedEffect(navegan) {
+            if(navegan){
+                navController.navigate("inicio"){
+                    popUpTo("login") {inclusive = true}
+                }
+                viewModel.cambiarNavegan()
+            }
         }
 
         if(viewModel.verAlerta == true){
@@ -66,7 +72,7 @@ class LoginScreen(private val navController: NavController? = null) {
             )
         }
 
-        var transicion = rememberInfiniteTransition()
+        var transicion = rememberInfiniteTransition(label = "")
 
         val offsetY by transicion.animateFloat(
             initialValue = 0f,
@@ -77,7 +83,8 @@ class LoginScreen(private val navController: NavController? = null) {
                     easing = FastOutSlowInEasing
                 ),
                 repeatMode = RepeatMode.Reverse
-            )
+            ),
+            label = ""
         )
         val colorCampo by animateColorAsState(
             Color.White
@@ -101,13 +108,13 @@ class LoginScreen(private val navController: NavController? = null) {
                 text ="Iniciar Sesion",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = colorCampo,
+                color = Color.Black,
                 modifier = Modifier.padding(32.dp).fillMaxWidth().offset(y= offsetY.dp),
                 textAlign = TextAlign.Center
             )
             TextField(
                 value = username,
-                onValueChange = {viewModel.cambioUsername(it)},
+                onValueChange = {viewModel.cambioEmail(it)},
                 label ={Text("username")},
                 modifier = Modifier.fillMaxWidth().padding(20.dp)
             )
@@ -141,5 +148,5 @@ class LoginScreen(private val navController: NavController? = null) {
 @Preview(showBackground = true)
 @Composable
 fun verlogin(){
-    LoginScreen().login()
+    LoginScreen(navController = rememberNavController())
 }

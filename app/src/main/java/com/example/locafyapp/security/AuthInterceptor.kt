@@ -15,7 +15,7 @@ class AuthInterceptor : Interceptor {
 
             Log.d("PruebaToken", "Viaja el token: $token")
 
-            requestOriginal.newBuilder().addHeader("Autorizacion", "Bearer $token").build()
+            requestOriginal.newBuilder().addHeader("Autorization", "Bearer $token").build()
         }else{
             Log.e("PruebaToken", "El token es vacio o nulo")
 

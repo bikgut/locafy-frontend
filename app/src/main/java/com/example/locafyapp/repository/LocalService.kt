@@ -27,7 +27,7 @@ interface LocalService {
 
         val instance =
             //AQUI VA LA IPV4
-            Retrofit.Builder().baseUrl("http://192.168.1.105:8080/")
+            Retrofit.Builder().baseUrl("http://192.168.18.230:8080/")
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create())
                 .client(clienteOkHttp).build()

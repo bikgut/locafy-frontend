@@ -1,5 +1,6 @@
 package com.example.locafyapp.security
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 
@@ -14,6 +15,8 @@ object TokenManager {
     fun inicializar(context: Context){
         prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
+
+
 
     fun guardarToken(token: String){
         prefs?.edit()?.putString(TOKEN_KEY, token)?.commit()
