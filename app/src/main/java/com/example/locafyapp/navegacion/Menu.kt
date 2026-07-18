@@ -12,9 +12,9 @@ import com.example.locafyapp.view.*
 import com.example.locafyapp.viewModel.LocalesViewModel
 
 @Composable
-fun menu(){
+fun menu(localesViewModel: LocalesViewModel = viewModel())
+{
     val bottomNavController = rememberNavController()
-    val localesViewModel: LocalesViewModel = viewModel()
 
     Scaffold(
         bottomBar = {

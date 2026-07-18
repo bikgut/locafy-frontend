@@ -1,9 +1,11 @@
 package com.example.locafyapp.navegacion
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.locafyapp.view.LoginScreen
 import com.example.locafyapp.view.MapScreen
 import com.example.locafyapp.viewModel.AdminViewModel
 import com.example.locafyapp.viewModel.ClienteViewModel
@@ -11,7 +13,8 @@ import com.example.locafyapp.viewModel.DuenoViewModel
 import com.example.locafyapp.viewModel.LocalesViewModel
 
 @Composable
-fun navegar(adminViewModel: AdminViewModel, clienteViewModel: ClienteViewModel, duenoViewModel: DuenoViewModel, localesViewModel: LocalesViewModel){
+fun navegar(localesViewModel: LocalesViewModel = viewModel()){
+
     val navController = rememberNavController()
 
     NavHost(
@@ -19,8 +22,11 @@ fun navegar(adminViewModel: AdminViewModel, clienteViewModel: ClienteViewModel, 
         startDestination = "inicio"
     )
     {
+        composable("login"){
+            LoginScreen(navController).login()
+        }
         composable("inicio"){
-            MapScreen(navController)
+            menu()
         }
     }
 }
